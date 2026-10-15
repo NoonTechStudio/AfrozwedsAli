@@ -1,0 +1,268 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #fbf7ef;
+  --color-cream: #f6efe2;
+  --color-linen: #ede4d3;
+  --color-ink: #2c2a24;
+  --color-ink-soft: #57524a;
+  --color-olive: #4b5733;
+  --color-olive-deep: #3a4426;
+  --color-sage: #aeb196;
+  --color-gold: #b08848;
+  --color-gold-soft: #d8bd8c;
+  --color-line: #ddd3c1;
+}
+
+@theme inline {
+  --font-script: var(--font-pinyon), "Pinyon Script", cursive;
+  --font-serif: var(--font-cormorant), Georgia, serif;
+  --font-sans: var(--font-jost), system-ui, sans-serif;
+  --font-arabic: var(--font-amiri), serif;
+}
+
+:root {
+  color-scheme: light;
+  --paper-grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .38  0 0 0 0 .28  0 0 0 .07 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--color-linen);
+  background-image: var(--paper-grain);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+.paper {
+  background-color: var(--color-paper);
+  background-image: var(--paper-grain);
+}
+
+.text-glow {
+  text-shadow: 0 1px 18px rgb(255 246 230 / 0.85), 0 0 2px rgb(255 246 230 / 0.6);
+}
+
+/* ---------- Scroll reveal ---------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 1s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 1s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-reveal][data-shown] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Ambient motion ---------- */
+@keyframes petal-fall {
+  0% {
+    transform: translate3d(0, -12vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--petal-opacity, 0.85);
+  }
+  50% {
+    transform: translate3d(var(--petal-drift, 30px), 50svh, 0) rotate(200deg);
+  }
+  90% {
+    opacity: var(--petal-opacity, 0.85);
+  }
+  100% {
+    transform: translate3d(calc(var(--petal-drift, 30px) * -0.6), 105svh, 0) rotate(420deg);
+    opacity: 0;
+  }
+}
+.petal {
+  animation: petal-fall var(--petal-duration, 14s) linear var(--petal-delay, 0s) infinite;
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-2.2deg);
+  }
+  50% {
+    transform: rotate(2.2deg);
+  }
+}
+.sway {
+  transform-origin: 50% 0;
+  animation: sway 6s ease-in-out infinite;
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  40% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 0.7;
+  }
+  80% {
+    opacity: 0.95;
+  }
+}
+.flicker {
+  animation: flicker 2.6s ease-in-out infinite;
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(-6%);
+  }
+  to {
+    transform: translateX(6%);
+  }
+}
+.drift {
+  animation: drift 38s ease-in-out infinite alternate;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+.breathe {
+  animation: breathe 2.4s ease-in-out infinite;
+}
+
+@keyframes nudge {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(6px);
+    opacity: 1;
+  }
+}
+.nudge {
+  animation: nudge 2.2s ease-in-out infinite;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes tick {
+  from {
+    opacity: 0.25;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.tick {
+  animation: tick 0.45s ease-out both;
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+.shimmer {
+  animation: shimmer 5s ease-in-out infinite;
+}
+
+/* Hero lines wait for the envelope, then rise in one after another */
+.hero-in {
+  opacity: 0;
+}
+html[data-opened] .hero-in {
+  animation: rise 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms) both;
+}
+
+.pillar {
+  background:
+    repeating-linear-gradient(90deg, transparent 0 6px, rgb(120 85 45 / 0.12) 6px 7px),
+    linear-gradient(90deg, #b88c5a, #ddba88 45%, #d0a774 72%, #b3875a);
+}
+
+/* ---------- Envelope ---------- */
+.envelope {
+  perspective: 900px;
+}
+.envelope .flap {
+  transform-origin: 50% 0;
+  transition:
+    transform 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    z-index 0s linear 0.35s;
+  z-index: 4;
+}
+.envelope[data-open] .flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+.envelope .letter {
+  transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.55s;
+}
+.envelope[data-open] .letter {
+  transform: translateY(-58%);
+}
+.envelope .seal {
+  transition:
+    transform 0.4s ease,
+    opacity 0.4s ease;
+}
+.envelope[data-open] .seal {
+  transform: scale(0.6);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .petal,
+  .sway,
+  .flicker,
+  .drift,
+  .breathe,
+  .nudge,
+  .shimmer {
+    animation: none;
+  }
+  .petal {
+    display: none;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
