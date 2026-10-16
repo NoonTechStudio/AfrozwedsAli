@@ -27,7 +27,7 @@ export function Countdown() {
           <Divider className="mt-9" />
         </Reveal>
         <Reveal delay={460}>
-          <p className="mt-5 font-script text-[min(9vw,40px)] leading-tight text-ink">
+          <p className="mt-5 font-script text-[min(7.5vw,36px)] leading-tight text-ink">
             <Couple />
           </p>
           <p className="mt-2 text-[12px] font-medium uppercase tracking-[0.42em] text-ink">{wedding.dateLabel}</p>
