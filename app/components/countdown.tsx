@@ -31,9 +31,9 @@ export function Countdown() {
             <Couple />
           </p>
           <p className="mt-2 text-[12px] font-medium uppercase tracking-[0.42em] text-ink">{wedding.dateLabel}</p>
-          <p className="mt-1.5 text-[11px] font-medium uppercase tracking-[0.3em] text-ink-soft">{wedding.timeLabel}</p>
-          <p className="mt-2 font-serif text-[17px] italic text-ink-soft">{wedding.venue}</p>
-          <p className="font-serif text-[14px] text-ink-soft">{wedding.address}</p>
+          <p className="mt-1.5 text-[11px] font-medium uppercase tracking-[0.3em] text-ink">{wedding.timeLabel}</p>
+          <p className="mt-2 font-serif text-[17px] font-medium italic text-ink">{wedding.venue}</p>
+          <p className="font-serif text-[14px] font-medium text-ink">{wedding.address}</p>
         </Reveal>
         <Reveal delay={600}>
           <p className="mt-10 font-script text-[26px] text-ink-soft">{wedding.tagline}</p>

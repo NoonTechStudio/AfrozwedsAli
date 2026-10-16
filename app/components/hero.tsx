@@ -36,7 +36,7 @@ export function Hero() {
         <p
           lang="ar"
           dir="rtl"
-          className="hero-in font-arabic text-[19px] leading-loose text-[#7a5a2a] text-glow"
+          className="hero-in font-arabic text-[19px] leading-loose text-[#7a5a2a]"
           style={d(100)}
         >
           بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
@@ -50,13 +50,13 @@ export function Hero() {
         </div>
 
         <h1
-          className="hero-in mt-3 font-script text-[min(8vw,40px)] leading-[1.2] text-ink text-glow"
+          className="hero-in mt-3 font-script text-[min(8vw,40px)] leading-[1.2] text-ink"
           style={d(700)}
         >
           <Couple />
         </h1>
 
-        <p className="hero-in mt-3 max-w-[16rem] font-serif text-[19px] leading-snug text-ink-soft text-glow" style={d(1000)}>
+        <p className="hero-in mt-3 max-w-[16rem] font-serif text-[19px] font-medium leading-snug text-ink" style={d(1000)}>
           We&rsquo;d love to celebrate this beautiful beginning with you.
         </p>
 
@@ -70,7 +70,7 @@ export function Hero() {
           href={mapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="hero-in mt-3 font-serif text-ink-soft text-glow transition hover:text-ink"
+          className="hero-in mt-3 font-serif font-medium text-ink transition hover:text-olive"
           style={d(1350)}
         >
           <span className="block text-[19px] italic">{wedding.venue}</span>
