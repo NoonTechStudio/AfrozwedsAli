@@ -1,5 +1,6 @@
-import { wedding } from "../wedding";
+import { mapsUrl, wedding } from "../wedding";
 import { ArchTop, Divider, FloralSpray, Lantern, Medallion } from "./art";
+import { Couple } from "./couple";
 import { Petals, Scene } from "./scene";
 
 const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
@@ -42,17 +43,17 @@ export function Hero() {
         </p>
 
         <p className="hero-in mt-4 text-[11px] font-medium uppercase tracking-[0.5em] text-ink" style={d(350)}>
-          Our Evening
+          Our Celebration
         </p>
         <div className="hero-in" style={d(500)}>
           <Divider className="mt-3" />
         </div>
 
         <h1
-          className="hero-in mt-3 whitespace-nowrap font-script text-[min(15.5vw,72px)] leading-[1.25] text-ink text-glow"
+          className="hero-in mt-3 font-script text-[min(8vw,40px)] leading-[1.2] text-ink text-glow"
           style={d(700)}
         >
-          {wedding.partnerOne} <span className="font-serif text-[0.62em] italic">&amp;</span> {wedding.partnerTwo}
+          <Couple />
         </h1>
 
         <p className="hero-in mt-3 max-w-[16rem] font-serif text-[19px] leading-snug text-ink-soft text-glow" style={d(1000)}>
@@ -62,9 +63,19 @@ export function Hero() {
         <p className="hero-in mt-7 text-[13px] font-medium uppercase tracking-[0.42em] text-ink" style={d(1250)}>
           {wedding.dateLabel}
         </p>
-        <p className="hero-in mt-2 font-serif text-[17px] italic text-ink-soft text-glow" style={d(1350)}>
-          {wedding.city}
+        <p className="hero-in mt-2 text-[12px] font-medium uppercase tracking-[0.3em] text-ink" style={d(1300)}>
+          {wedding.timeLabel}
         </p>
+        <a
+          href={mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hero-in mt-3 font-serif text-ink-soft text-glow transition hover:text-ink"
+          style={d(1350)}
+        >
+          <span className="block text-[19px] italic">{wedding.venue}</span>
+          <span className="block text-[14px] leading-snug">{wedding.address}</span>
+        </a>
 
         <a
           href="#rsvp"

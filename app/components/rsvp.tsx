@@ -4,6 +4,7 @@ import { useState, useSyncExternalStore, useTransition } from "react";
 import { submitRsvp, type RsvpInput } from "../actions";
 import { wedding } from "../wedding";
 import { Divider, FloralSpray, Heart, Medallion, MosqueSilhouette } from "./art";
+import { Couple } from "./couple";
 
 const STORAGE_KEY = "ali-afroz-rsvp";
 const CHANGE_EVENT = "rsvp-change";
@@ -104,7 +105,7 @@ export function Rsvp() {
                 </h2>
                 <Heart className="mx-auto mt-3 h-5 w-5 text-ink" />
                 <p className="mx-auto mt-3 max-w-[17rem] text-[14.5px] leading-relaxed text-ink-soft">
-                  Please let us know if you&rsquo;ll be joining us for our special evening.
+                  Please let us know if you&rsquo;ll be joining us for our special day.
                 </p>
 
                 <div className="mt-9">
@@ -289,8 +290,8 @@ function ThankYou({ rsvp, onEdit }: { rsvp: RsvpInput; onEdit: () => void }) {
             ? "We can’t wait to celebrate with you!"
             : "You’ll be dearly missed. Please keep us in your duas."}
         </p>
-        <p className="mt-6 whitespace-nowrap font-script text-[min(12vw,50px)] leading-tight text-ink">
-          {wedding.partnerOne} <span className="font-serif text-[0.62em] italic">&amp;</span> {wedding.partnerTwo}
+        <p className="mt-6 font-script text-[min(8.5vw,38px)] leading-tight text-ink">
+          <Couple />
         </p>
         <p className="mt-2 text-[11px] font-medium uppercase tracking-[0.42em] text-ink">{wedding.dateLabel}</p>
         <Divider className="mt-6" />

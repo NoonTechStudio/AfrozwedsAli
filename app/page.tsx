@@ -3,6 +3,7 @@ import { Countdown } from "./components/countdown";
 import { EnvelopeIntro } from "./components/envelope";
 import { Hero } from "./components/hero";
 import { Reveal } from "./components/reveal";
+import { Couple } from "./components/couple";
 import { Rsvp } from "./components/rsvp";
 import { wedding } from "./wedding";
 
@@ -28,8 +29,8 @@ export default function Home() {
             <p className="mx-auto mt-5 max-w-[18rem] font-serif text-[19px] italic leading-snug text-ink-soft">
               Your presence is our joy, and your duas our most cherished gift.
             </p>
-            <p className="mt-6 font-script text-[34px] leading-tight text-ink">
-              {wedding.partnerOne} <span className="font-serif text-[0.62em] italic">&amp;</span> {wedding.partnerTwo}
+            <p className="mt-6 font-script text-[30px] leading-tight text-ink">
+              <Couple />
             </p>
             <p className="mt-2 flex items-center justify-center gap-2 text-[11px] uppercase tracking-[0.4em] text-ink-soft">
               {wedding.dateShort}

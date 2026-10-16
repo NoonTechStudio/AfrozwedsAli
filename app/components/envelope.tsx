@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { wedding } from "../wedding";
 import { FloralSpray, Medallion } from "./art";
+import { Couple } from "./couple";
 
 type Stage = "sealed" | "opening" | "leaving" | "gone";
 
@@ -59,8 +60,8 @@ export function EnvelopeIntro() {
         {/* the card tucked inside */}
         <span className="letter absolute inset-x-[7%] top-[6%] z-[2] flex h-[88%] flex-col items-center justify-start rounded-[4px] border border-gold/40 bg-paper pt-[9%] shadow-sm">
           <Medallion className="h-6 w-6" />
-          <span className="mt-2 font-script text-[min(9vw,38px)] leading-tight text-ink">
-            {wedding.partnerOne} <span className="font-serif text-[0.62em] italic">&amp;</span> {wedding.partnerTwo}
+          <span className="mt-2 font-script text-[min(5.5vw,24px)] leading-tight text-ink">
+            <Couple />
           </span>
           <span className="mt-1 text-[9px] uppercase tracking-[0.4em] text-ink-soft">{wedding.dateLabel}</span>
         </span>
