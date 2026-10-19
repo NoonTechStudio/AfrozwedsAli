@@ -169,7 +169,7 @@ export function Rsvp() {
                   {!pending && <span className="transition-transform group-enabled:group-hover:translate-x-1">&rarr;</span>}
                 </button>
                 {answered && form.attending === "no" && (
-                  <p className="mt-3 text-[12.5px] text-ink-soft">This will open WhatsApp &mdash; just tap send.</p>
+                  <p className="mt-3 text-[12.5px] text-ink-soft">Your RSVP will open in WhatsApp &mdash; please tap <span className="font-medium text-ink">Send</span> so it reaches us &hearts;</p>
                 )}
               </form>
             ) : (
@@ -244,7 +244,7 @@ export function Rsvp() {
                   {pending ? "Sending…" : "Confirm RSVP"}
                   {!pending && <span className="transition-transform group-hover:translate-x-1">&rarr;</span>}
                 </button>
-                <p className="mt-3 text-[12.5px] text-ink-soft">This will open WhatsApp &mdash; just tap send.</p>
+                <p className="mt-3 text-[12.5px] text-ink-soft">Your RSVP will open in WhatsApp &mdash; please tap <span className="font-medium text-ink">Send</span> so it reaches us &hearts;</p>
                 <button
                   type="button"
                   onClick={() => goTo(1)}
