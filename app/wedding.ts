@@ -3,7 +3,7 @@ export const wedding = {
   partnerOne: "Ali Akbar Sorangwala",
   partnerTwo: "Afroz Surti",
   dateLabel: "November 1, 2026",
-  dateShort: "01 · 11 · 2026",
+  dateShort: "11.01.2026",
   timeLabel: "1:00 PM – 5:00 PM",
   // Afternoon in New York (EST, UTC−5 — daylight saving ends early on Nov 1).
   // Used by the countdown and "Save the date".
@@ -12,6 +12,8 @@ export const wedding = {
   venue: "Red Chilli Restaurant",
   address: "76-05 37th Ave, Jackson Heights, NY 11372",
   city: "New York",
+  // WhatsApp number that receives RSVPs — full international format, digits only (e.g. "19175551234").
+  whatsapp: "19179160413",
   tagline: "Together is a beautiful place to be",
 };
 

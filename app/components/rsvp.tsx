@@ -1,35 +1,26 @@
 "use client";
 
-import { useState, useSyncExternalStore, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { submitRsvp, type RsvpInput } from "../actions";
 import { wedding } from "../wedding";
 import { Divider, FloralSpray, Heart, Medallion, MosqueSilhouette } from "./art";
 import { Couple } from "./couple";
 
-const STORAGE_KEY = "ali-afroz-rsvp";
-const CHANGE_EVENT = "rsvp-change";
-
-function readSaved(): string | null {
-  try {
-    return localStorage.getItem(STORAGE_KEY);
-  } catch {
-    return null;
-  }
-}
-function writeSaved(value: RsvpInput | null) {
-  try {
-    if (value) localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
-    else localStorage.removeItem(STORAGE_KEY);
-  } catch {}
-  window.dispatchEvent(new Event(CHANGE_EVENT));
-}
-function subscribe(cb: () => void) {
-  window.addEventListener(CHANGE_EVENT, cb);
-  window.addEventListener("storage", cb);
-  return () => {
-    window.removeEventListener(CHANGE_EVENT, cb);
-    window.removeEventListener("storage", cb);
-  };
+// Builds the pre-filled WhatsApp message the guest sends to the hosts.
+function whatsappUrl(r: RsvpInput) {
+  const lines =
+    r.attending === "yes"
+      ? [
+          `RSVP – ${wedding.partnerOne} & ${wedding.partnerTwo}`,
+          `Name: ${r.name.trim()}`,
+          `Attending: Yes`,
+          `Guests: ${r.guests}`,
+          r.guestNames.trim() && `Guest names: ${r.guestNames.trim()}`,
+          r.dietary.trim() && `Dietary: ${r.dietary.trim()}`,
+        ]
+      : [`RSVP – ${wedding.partnerOne} & ${wedding.partnerTwo}`, `Name: ${r.name.trim()}`, `Attending: No, sadly can't make it`];
+  const number = wedding.whatsapp.replace(/\D/g, "");
+  return `https://wa.me/${number}?text=${encodeURIComponent(lines.filter(Boolean).join("\n"))}`;
 }
 
 const inputClass =
@@ -39,9 +30,7 @@ const primaryButton =
   "group flex w-full items-center justify-center gap-3 rounded-md bg-olive px-6 py-4 text-[12px] font-medium uppercase tracking-[0.32em] text-cream shadow-[0_12px_26px_-14px_rgba(58,68,38,.9)] transition enabled:hover:bg-olive-deep enabled:active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-sage disabled:shadow-none";
 
 export function Rsvp() {
-  const savedRaw = useSyncExternalStore(subscribe, readSaved, () => null);
-  const saved = savedRaw ? (JSON.parse(savedRaw) as RsvpInput) : null;
-
+  const [saved, setSaved] = useState<RsvpInput | null>(null);
   const [step, setStep] = useState<1 | 2>(1);
   const [form, setForm] = useState<RsvpInput>({ name: "", attending: "yes", guests: 1, guestNames: "", dietary: "" });
   const [answered, setAnswered] = useState(false);
@@ -53,10 +42,12 @@ export function Rsvp() {
 
   const send = () => {
     setError("");
+    // Open WhatsApp right away, inside the click, so browsers don't block it as a popup.
+    window.open(whatsappUrl(form), "_blank");
     startTransition(async () => {
       const res = await submitRsvp(form).catch(() => ({ ok: false as const, error: "" }));
       if (res.ok) {
-        writeSaved(form);
+        setSaved(form);
         document.getElementById("rsvp")?.scrollIntoView({ behavior: "smooth", block: "start" });
       } else {
         setError(res.error || "Something went wrong — please try again in a moment.");
@@ -82,7 +73,14 @@ export function Rsvp() {
       setAnswered(true);
     }
     setStep(1);
-    writeSaved(null);
+    setSaved(null);
+  };
+
+  const another = () => {
+    setForm({ name: "", attending: "yes", guests: 1, guestNames: "", dietary: "" });
+    setAnswered(false);
+    setStep(1);
+    setSaved(null);
   };
 
   return (
@@ -92,7 +90,7 @@ export function Rsvp() {
 
       <div className="relative z-10 mx-auto flex w-full max-w-[400px] flex-1 flex-col justify-center px-7 py-20">
         {saved ? (
-          <ThankYou rsvp={saved} onEdit={edit} />
+          <ThankYou rsvp={saved} onEdit={edit} onAnother={another} />
         ) : (
           <div key={step} className="rise text-center">
             <Medallion className="mx-auto h-8 w-8" />
@@ -170,6 +168,9 @@ export function Rsvp() {
                   {pending ? "Sending…" : answered && form.attending === "no" ? "Send RSVP" : "Next"}
                   {!pending && <span className="transition-transform group-enabled:group-hover:translate-x-1">&rarr;</span>}
                 </button>
+                {answered && form.attending === "no" && (
+                  <p className="mt-3 text-[12.5px] text-ink-soft">This will open WhatsApp &mdash; just tap send.</p>
+                )}
               </form>
             ) : (
               <form
@@ -243,6 +244,7 @@ export function Rsvp() {
                   {pending ? "Sending…" : "Confirm RSVP"}
                   {!pending && <span className="transition-transform group-hover:translate-x-1">&rarr;</span>}
                 </button>
+                <p className="mt-3 text-[12.5px] text-ink-soft">This will open WhatsApp &mdash; just tap send.</p>
                 <button
                   type="button"
                   onClick={() => goTo(1)}
@@ -264,7 +266,7 @@ export function Rsvp() {
 const CUSPED_ARCH =
   "M1 140 V104 C1 90 10 84 22 84 C28 66 44 58 62 58 C74 36 102 24 126 20 C139 18 146 12 150 2 C154 12 161 18 174 20 C198 24 226 36 238 58 C256 58 272 66 278 84 C290 84 299 90 299 104 V140";
 
-function ThankYou({ rsvp, onEdit }: { rsvp: RsvpInput; onEdit: () => void }) {
+function ThankYou({ rsvp, onEdit, onAnother }: { rsvp: RsvpInput; onEdit: () => void; onAnother: () => void }) {
   const firstName = rsvp.name.trim().split(/\s+/)[0];
   const coming = rsvp.attending === "yes";
 
@@ -296,13 +298,30 @@ function ThankYou({ rsvp, onEdit }: { rsvp: RsvpInput; onEdit: () => void }) {
         <p className="mt-2 text-[11px] font-medium uppercase tracking-[0.42em] text-ink">{wedding.dateLabel}</p>
         <Divider className="mt-6" />
         <p className="mt-5 font-serif text-[20px] text-ink">{coming ? "See you there!" : "With love & gratitude"}</p>
-        <button
-          type="button"
-          onClick={onEdit}
-          className="relative z-10 mt-6 text-[13px] text-ink-soft underline decoration-ink/30 underline-offset-4 hover:text-ink"
+        <a
+          href={whatsappUrl(rsvp)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative z-10 mt-6 inline-block text-[13px] text-ink-soft underline decoration-ink/30 underline-offset-4 hover:text-ink"
         >
-          Need to change your RSVP?
-        </button>
+          WhatsApp didn&rsquo;t open? Tap here to send
+        </a>
+        <div className="relative z-10 mt-3 flex justify-center gap-5">
+          <button
+            type="button"
+            onClick={onEdit}
+            className="text-[13px] text-ink-soft underline decoration-ink/30 underline-offset-4 hover:text-ink"
+          >
+            Change RSVP
+          </button>
+          <button
+            type="button"
+            onClick={onAnother}
+            className="text-[13px] text-ink-soft underline decoration-ink/30 underline-offset-4 hover:text-ink"
+          >
+            RSVP for someone else
+          </button>
+        </div>
       </div>
     </div>
   );
